@@ -6,6 +6,7 @@ import sys
 import sagemaker_containers
 import pandas as pd
 import torch
+import torch.nn as nn
 import torch.optim as optim
 import torch.utils.data
 

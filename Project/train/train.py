@@ -69,11 +69,9 @@ def train(model, train_loader, epochs, optimizer, loss_fn, device):
     """
     model.train()
 
-    batch_size = train_loader.batch_size
     for epoch in range(1, epochs + 1):
         
         # initialize hidden state
-        h = model.init_hidden(batch_size)
         total_loss = 0
 
         # batch data loop
@@ -84,11 +82,10 @@ def train(model, train_loader, epochs, optimizer, loss_fn, device):
             batch_y = batch_y.to(device)
 
             # get data for each element the hidden state
-            h = tuple([each.data for each in h])
             
             model.zero_grad() 
 
-            output, h = model(batch_X, h)
+            output= model(batch_X)
 
             # loss and backpropagation
             loss = loss_fn(output, batch_y.float())

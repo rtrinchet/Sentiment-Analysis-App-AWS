@@ -67,24 +67,35 @@ def train(model, train_loader, epochs, optimizer, loss_fn, device):
     loss_fn      - The loss function used for training.
     device       - Where the model and data should be loaded (gpu or cpu).
     """
-    
+    model.train()
+
+    batch_size = train_loader.batch_size
     for epoch in range(1, epochs + 1):
-        model.train()
+        
+        # initialize hidden state
+        h = model.init_hidden(batch_size)
         total_loss = 0
+
+        # batch data loop
         for batch in train_loader:         
             batch_X, batch_y = batch
             
             batch_X = batch_X.to(device)
             batch_y = batch_y.to(device)
 
+            # get data for each element the hidden state
+            h = tuple([each.data for each in h])
             
             model.zero_grad() 
 
-            output = model(batch_X)
+            output, h = model(batch_X, h)
 
+            # loss and backpropagation
             loss = loss_fn(output, batch_y.float())
             loss.backward()
+            # to prevent exploding gradient problem
             nn.utils.clip_grad_norm_(model.parameters(), 5)
+            # take a step of the optimizer
             optimizer.step()
 
             total_loss += loss.data.item()

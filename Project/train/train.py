@@ -88,7 +88,7 @@ def train(model, train_loader, epochs, optimizer, loss_fn, device):
             output= model(batch_X)
 
             # loss and backpropagation
-            loss = loss_fn(output, batch_y.float())
+            loss = loss_fn(output.squeeze(), batch_y)
             loss.backward()
             # to prevent exploding gradient problem
             nn.utils.clip_grad_norm_(model.parameters(), 5)

@@ -67,10 +67,10 @@ def train(model, train_loader, epochs, optimizer, loss_fn, device):
     loss_fn      - The loss function used for training.
     device       - Where the model and data should be loaded (gpu or cpu).
     """
-    model.train()
+    
 
     for epoch in range(1, epochs + 1):
-        
+        model.train()
         # initialize hidden state
         total_loss = 0
 
